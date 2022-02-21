@@ -10,7 +10,10 @@ import {
   AfterContentChecked,
   AfterViewInit,
   AfterViewChecked,
-  OnDestroy
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  ContentChild
 } from '@angular/core';
 
 @Component({
@@ -30,6 +33,9 @@ export class ServerElementComponent implements
   OnDestroy {
   @Input('srvElement') element: { type: string, name: string, content: string };
   @Input() name: string;
+  // @ViewChild('heading') header: ElementRef; // older version
+  @ViewChild('heading', {static: true}) header: ElementRef;
+  @ContentChild('contentParagraph', {static: true}) paragraph: ElementRef;
 
   constructor() {
     console.log('constructor called!');
@@ -38,10 +44,12 @@ export class ServerElementComponent implements
   ngOnChanges(changes: SimpleChanges) {
     console.log('ngOnChanges called');
     console.log(changes);
+    console.log('%cText content of paragraph: ', this.paragraph.nativeElement.textContent, 'color: green; font-size: 36px;');
   }
 
   ngOnInit() {
     console.log('ngOnInit called');
+    console.log('%cText content: ', this.header.nativeElement.textContent, 'color: red; font-size: 40px;');
   }
 
   ngDoCheck() {
@@ -49,7 +57,8 @@ export class ServerElementComponent implements
   }
 
   ngAfterContentInit() {
-    console.log('%cngAfterContentInit called', 'color: red; font-size: 20px;')
+    console.log('%cngAfterContentInit called', 'color: red; font-size: 20px;');
+    console.log('%cText content of paragraph: ', this.paragraph.nativeElement.textContent, 'color: green; font-size: 36px;');
   }
 
   ngAfterContentChecked() {
@@ -57,7 +66,8 @@ export class ServerElementComponent implements
   }
 
   ngAfterViewInit() {
-    console.log('%cngAfterViewInit called', 'color: yellow; font-size: 20px;')
+    console.log('%cngAfterViewInit called', 'color: yellow; font-size: 20px;');
+    console.log('%cText content: ' + this.header.nativeElement.textContent, 'color: red; font-size: 40px;');
   }
 
   ngAfterViewChecked() {
